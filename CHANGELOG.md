@@ -1,21 +1,127 @@
+# 2.14.0
+
+Features:
+* Support monochrome bar type (#960)
+* Support editor version detection on Windows (Editor, Windows)
+* Apply default color palettes in `--file` and `--data` (Logo)
+* Print all presets in `--list-presets` for better Windows support (Windows)
+* Support for guix package manager detection (Packages, Linux)
+* Support named variable placeholders in custom module formattion string (#796)
+    * `--title-format '{user-name-colored}{at-symbol-colored}{host-name-colored}'` is equivalent to `--title-format '{6}{7}{8}'`
+* Support named color placeholders in custom module formattion string
+    * `--<module>-format '{#red}'` is equivalent to `--<module>-format '{#31}'`
+    * `'{#red}'` or `'{#31}'` is preferred over `\u001b[31m` because is more readable and `--pipe` aware (will be ignored in pipe mode)
+    * Supported in `Custom` module too
+    * See `fastfetch -h format` for detail
+* Add option `--color-separator` to set the color of key-value separators
+* Support Guix package manager count (#792, Packages, Linux)
+* Improve python based shell detection (#977, Shell, macOS)
+* Print error reason when vulkan init fails (Vulkan)
+
+Bugfixes:
+* Don't detect `.conf` files in `--list-config-paths`
+* Don't try to detect terminals in MSYS shell with process backtracing (Windows)
+* Fix `outputColor` doesn't work if module keys are disabled
+
+Logos:
+* Add Cereus Linux
+* Re-add special handling of Loc-OS
+
+# 2.13.2
+
+Another hotfix release :(
+
+Bugfixes:
+* Remove DRM driver version detection feature, which caused a performance regression for nouveau drivers (#956, Display, Linux)
+* Fix compatibility for old python versions. Regression of `2.13.0`
+* Don't use `*-unknown` as display name for Wayland protocol (Display, Linux)
+
+Features:
+* Add new module `Editor` which prints information of the default editor, i.e. $VISUAL or $EDITOR (#430, Editor)
+
+Logos:
+* Added CuerdOS
+* Remove special handling of Loc-OS
+
+# 2.13.1
+
+Fix a regression introduced in v2.13.0
+
+Bugfixes:
+* Fix CPU frequency not displayed if `bios_limit` is not available (CPU, Linux)
+
+Features:
+* Add `--cpu-show-pe-core-count` to detect and display core count for performance / efficiency cores (CPU, FreeBSD)
+
+# 2.13.0
+
+Changes:
+* Option `--gpu-force-vulkan <?bool>` has been changed to `--gpu-detection-method <enum>`
+    * Use `--gpu-detection-method vulkan` to get the old behavior
+    * See `fastfetch -h gpu-detection-method` for detail
+* In Linux, BIOS limited CPU frequency is printed by default to match the behavior of neofetch (CPU, Linux, #947)
+
+Features:
+* Add new module `Bootmgr` which prints information of stage 2 bootloader (grub, system-boot, etc)
+    * Requires root permission to work on Windows and FreeBSD
+    * Requires booting in UEFI mode
+* Add package manager lpkg and lpkg-build support (Packages, Linux)
+* Improve macOS 10.13 compatibility (macOS)
+* Detect core count for performance / efficiency cores (CPU)
+    * Test it with `fastfetch -s cpu --cpu-format '{9}'`
+* Support min / max frequency and physical core count detection in FreeBSD, if kernel supports it (CPU, FreeBSD)
+* Detect DRM driver version if DRM detection method is used (GPU, Linux)
+
+Bugfixes:
+* Don't detect `clifm` and `valgrind` as a terminal (Terminal, Linux)
+* Improve stability (PhysicalMemory, FreeBSD)
+* Fix bssid & status detection (Wifi, FreeBSD)
+* Ensure createTime is correctly initialized (Disk, FreeBSD / macOS)
+* Fix `--cpu-freq-ndigits` not working if `--cpu-format` is used
+* Fix `nix-user` package count detection (Packages, Linux)
+* Fix some memory leaks
+
+Logos:
+* Fix Manjaro logo not displayed
+* Add SpoinkOS
+* Add Loc-OS
+* Add Furreto Linux
+* Fix TorizonCore logo colors
+* Fix KDE neon logo not displayed
+
 # 2.12.0
 
 Changes:
+* The long deprecated flag based config files are removed.
+    * They can still be used with `xargs fastfetch < /path/to/config.conf`
+    * `--gen-config` can be used to migrate them to json based config files
 * The long deprecated options `--set` and `--set-keyless` are removed.
+* `Kernel` module now prints kernel name by default
 
 Features:
-* Support st terminal font detection for font configuration compiled in st binary (TerminalFont, Linux)
-* Support option `--color-output` to change output color of all modules except `Title`, `Separator` and `Colors`
+* Support `st` terminal font detection for font configuration compiled in `st` binary (TerminalFont, Linux)
+* Add option `--color-output` to change output color of all modules except `Title`, `Separator`
     * `display.color.output` in JSONC config file
-* Support option `--<module>-output-color` to change output color of one specified module, which overrides the global option `--color-output`
-* Add new module `Loadavg` to print load averages (Loadavg)
+* Add option `--<module>-output-color` to change output color of one specified module, which overrides the global option `--color-output`
 * Add option `--publicip-ipv6` to print IPv6 address (PublicIP)
+* Add new module `Loadavg` to print load averages (Loadavg)
+* Add new module `PhysicalMemory` to print information of physical memory devices (PhysicalMemory)
+    * Requires root permission to work on Linux and FreeBSD
+* Support specifying `--logo-width` only for `--kitty-direct` and `--iterm` (Logo)
+* Add option `--localip-show-all-ips` to show all IPs assigned to the same interface (LocalIP)
+    * Default to `false`
+* Improve compatibility with `(*term)` (#909, Terminal, macOS)
+* Support GPU core count and frequency detection for Asahi Linux (GPU, Linux)
 
 Bugfixes:
-* Rename option `--temperature-unit` to `--temp-unit` as stated in help messages
+* Rename option `--temperature-unit` to `--temp-unit` as documented in help messages
+* Fix alternate logo doesn't work with `{ "type": "builtin" }` (#914, Logo)
 
 Logos:
 * Fix DahliaOS detection
+* Add openSUSE Slowroll
+* Add macOS3
+* Add Quirinux
 
 # 2.11.5
 

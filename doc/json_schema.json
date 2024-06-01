@@ -4,9 +4,8 @@
         "colors": {
             "type": "string",
             "enum": [
-                "reset_", "bright_", "dim_",
-                "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "default",
-                "bright_black", "bright_red", "bright_green", "bright_yellow", "bright_blue", "bright_magenta", "bright_cyan", "bright_white"
+                "reset_", "bright_", "dim_", "italic_", "underline_", "blink_", "inverse_", "hidden_", "strike_", "light_",
+                "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "default"
             ]
         },
         "key": {
@@ -24,11 +23,11 @@
             "default": 0
         },
         "format": {
-            "description": "Output format of the module",
+            "description": "Output format of the module. See `-h &lt;module&gt;-format` for detail",
             "type": "string"
         },
         "outputColor": {
-            "description": "Output color of the module",
+            "description": "Output color of the module. Left empty to use `display.color.output`",
             "$ref": "#/$defs/colors"
         },
         "percent": {
@@ -388,6 +387,10 @@
                                 "output": {
                                     "description": "Set the color of the module output",
                                     "$ref": "#/$defs/colors"
+                                },
+                                "separator": {
+                                    "description": "Set the color of the key-value separator",
+                                    "$ref": "#/$defs/colors"
                                 }
                             }
                         }
@@ -516,7 +519,7 @@
                     "properties": {
                         "type": {
                             "type": "number",
-                            "description": "Set the percentage output type. 1 for percentage number, 2 for bar, 3 for both, 6 for bar only, 9 for colored number",
+                            "description": "Set the percentage output type. 1 for percentage number, 2 for multi-color bar, 3 for both, 6 for bar only, 9 for colored number, 10 for monochrome bar",
                             "minimum": 0,
                             "maximum": 255,
                             "default": 9
@@ -681,6 +684,7 @@
                             "bios",
                             "bluetooth",
                             "board",
+                            "bootmgr",
                             "break",
                             "brightness",
                             "camera",
@@ -695,6 +699,7 @@
                             "disk",
                             "diskio",
                             "de",
+                            "editor",
                             "font",
                             "gamepad",
                             "gpu",
@@ -714,6 +719,7 @@
                             "os",
                             "packages",
                             "physicaldisk",
+                            "physicalmemory",
                             "player",
                             "poweradapter",
                             "processes",
@@ -772,11 +778,15 @@
                                         "anyOf": [
                                             {
                                                 "const": "bios",
-                                                "description": "Print BIOS name, version, release date, etc"
+                                                "description": "Print information of 1st-stage bootloader (name, version, release date, etc)"
                                             },
                                             {
                                                 "const": "board",
-                                                "description": "Print mather board name and other info"
+                                                "description": "Print motherboard name and other info"
+                                            },
+                                            {
+                                                "const": "bootmgr",
+                                                "description": "Print information of 2nd-stage bootloader (name, firmware, etc)"
                                             },
                                             {
                                                 "const": "camera",
@@ -789,6 +799,10 @@
                                             {
                                                 "const": "datetime",
                                                 "description": "Print current date and time"
+                                            },
+                                            {
+                                                "const": "editor",
+                                                "description": "Print information of the default editor ($VISUAL or $EDITOR)"
                                             },
                                             {
                                                 "const": "font",
@@ -829,6 +843,10 @@
                                             {
                                                 "const": "os",
                                                 "description": "Print operating system name and version"
+                                            },
+                                            {
+                                                "const": "physicalmemory",
+                                                "description": "Print system physical memory devices"
                                             },
                                             {
                                                 "const": "player",
@@ -1002,6 +1020,21 @@
                                         "minimum": 0,
                                         "maximum": 400,
                                         "default": 10
+                                    },
+                                    "key": {
+                                        "$ref": "#/$defs/key"
+                                    },
+                                    "keyColor": {
+                                        "$ref": "#/$defs/keyColor"
+                                    },
+                                    "outputColor": {
+                                        "$ref": "#/$defs/outputColor"
+                                    },
+                                    "keyWidth": {
+                                        "$ref": "#/$defs/keyWidth"
+                                    },
+                                    "format": {
+                                        "$ref": "#/$defs/format"
                                     }
                                 }
                             },
@@ -1049,6 +1082,11 @@
                                         "minimum": 0,
                                         "maximum": 9,
                                         "default": 2
+                                    },
+                                    "showPeCoreCount": {
+                                        "description": "Detect and display CPU frequency of different core types (eg. Pcore and Ecore) if supported",
+                                        "type": "boolean",
+                                        "default": false
                                     },
                                     "key": {
                                         "$ref": "#/$defs/key"
@@ -1431,10 +1469,16 @@
                                         "type": "boolean",
                                         "default": false
                                     },
-                                    "forceVulkan": {
-                                        "description": "Force using vulkan to detect GPUs, which support video memory usage detection with `--allow-slow-operations`",
-                                        "type": "boolean",
-                                        "default": false
+                                    "detectionMethod": {
+                                        "description": "Force using a specified method to detect GPUs",
+                                        "type": "string",
+                                        "enum": [
+                                            "auto",
+                                            "pci",
+                                            "vulkan",
+                                            "opengl"
+                                        ],
+                                        "default": "auto"
                                     },
                                     "hideType": {
                                         "description": "Specify the type of GPUs should not be printed",
@@ -1495,6 +1539,11 @@
                                         "description": "Show network prefix length (/N)",
                                         "type": "boolean",
                                         "default": true
+                                    },
+                                    "showAllIps": {
+                                        "description": "Show all IPs bound to the same interface.\nBy default only the first IP is shown",
+                                        "type": "boolean",
+                                        "default": false
                                     },
                                     "compact": {
                                         "description": "Show all IPs in one line",

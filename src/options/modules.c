@@ -7,6 +7,7 @@ void ffOptionsInitModules(FFOptionsModules* options)
     ffInitBiosOptions(&options->bios);
     ffInitBluetoothOptions(&options->bluetooth);
     ffInitBoardOptions(&options->board);
+    ffInitBootmgrOptions(&options->bootmgr);
     ffInitBreakOptions(&options->break_);
     ffInitBrightnessOptions(&options->brightness);
     ffInitCameraOptions(&options->camera);
@@ -22,11 +23,13 @@ void ffOptionsInitModules(FFOptionsModules* options)
     ffInitDiskOptions(&options->disk);
     ffInitDiskIOOptions(&options->diskIo);
     ffInitDisplayOptions(&options->display);
+    ffInitEditorOptions(&options->editor);
     ffInitFontOptions(&options->font);
     ffInitGPUOptions(&options->gpu);
     ffInitGamepadOptions(&options->gamepad);
     ffInitHostOptions(&options->host);
     ffInitIconsOptions(&options->icons);
+    ffInitInitSystemOptions(&options->initSystem);
     ffInitKernelOptions(&options->kernel);
     ffInitLMOptions(&options->lm);
     ffInitLoadavgOptions(&options->loadavg);
@@ -41,6 +44,7 @@ void ffOptionsInitModules(FFOptionsModules* options)
     ffInitOpenGLOptions(&options->openGL);
     ffInitPackagesOptions(&options->packages);
     ffInitPhysicalDiskOptions(&options->physicalDisk);
+    ffInitPhysicalMemoryOptions(&options->physicalMemory);
     ffInitPlayerOptions(&options->player);
     ffInitPowerAdapterOptions(&options->powerAdapter);
     ffInitProcessesOptions(&options->processes);
@@ -72,6 +76,7 @@ void ffOptionsDestroyModules(FFOptionsModules* options)
     ffDestroyBiosOptions(&options->bios);
     ffDestroyBluetoothOptions(&options->bluetooth);
     ffDestroyBoardOptions(&options->board);
+    ffDestroyBootmgrOptions(&options->bootmgr);
     ffDestroyBreakOptions(&options->break_);
     ffDestroyBrightnessOptions(&options->brightness);
     ffDestroyCameraOptions(&options->camera);
@@ -87,11 +92,13 @@ void ffOptionsDestroyModules(FFOptionsModules* options)
     ffDestroyDiskOptions(&options->disk);
     ffDestroyDiskIOOptions(&options->diskIo);
     ffDestroyDisplayOptions(&options->display);
+    ffDestroyEditorOptions(&options->editor);
     ffDestroyFontOptions(&options->font);
     ffDestroyGPUOptions(&options->gpu);
     ffDestroyGamepadOptions(&options->gamepad);
     ffDestroyHostOptions(&options->host);
     ffDestroyIconsOptions(&options->icons);
+    ffDestroyInitSystemOptions(&options->initSystem);
     ffDestroyKernelOptions(&options->kernel);
     ffDestroyLMOptions(&options->lm);
     ffDestroyLoadavgOptions(&options->loadavg);
@@ -105,6 +112,7 @@ void ffOptionsDestroyModules(FFOptionsModules* options)
     ffDestroyOpenCLOptions(&options->openCL);
     ffDestroyOpenGLOptions(&options->openGL);
     ffDestroyPhysicalDiskOptions(&options->physicalDisk);
+    ffDestroyPhysicalMemoryOptions(&options->physicalMemory);
     ffDestroyPackagesOptions(&options->packages);
     ffDestroyPlayerOptions(&options->player);
     ffDestroyPowerAdapterOptions(&options->powerAdapter);

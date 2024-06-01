@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 __fastfetch_complete_help()
 {
     local __ff_helps=(
@@ -197,7 +195,7 @@ __fastfetch_completion()
         "--disk-show-subvolumes"
         "--gpu-hide-integrated"
         "--gpu-hide-discrete"
-        "--gpu-force-vulkan"
+        "--gpu-force-method"
         "--disk-show-unknown"
         "--bluetooth-show-disconnected"
     )
